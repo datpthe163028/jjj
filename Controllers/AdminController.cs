@@ -24,6 +24,7 @@ namespace Project.Controllers
             double totalMonth = 0;
             double totalDay = 0;
             SortedDictionary<int, double> myDictionary = new SortedDictionary<int, double>();
+            SortedDictionary<int, string> myyDictionary = new SortedDictionary<int, string>();
 
             foreach (var l in x)
             {
@@ -47,6 +48,25 @@ namespace Project.Controllers
             ViewData["total"] = total;
             ViewData["totalMonth"] = totalMonth;
             ViewData["totaday"] = totalDay;
+
+            foreach (var l in x)
+            {
+                if (myDictionary.ContainsKey(l.PurchaseDate.Month))
+                {
+                    myDictionary[l.PurchaseDate.Month] += l.TotalPrice;
+                }
+                else
+                {
+                    myDictionary.Add(l.PurchaseDate.Month, l.TotalPrice);
+                }
+                total += l.TotalPrice;
+                if (l.PurchaseDate.Month == now.Month)
+                {
+                    totalMonth += l.TotalPrice;
+                    if (l.PurchaseDate.Day == now.Day)
+                        totalDay += l.TotalPrice;
+                }
+            }
             return View(myDictionary);
         }
 
